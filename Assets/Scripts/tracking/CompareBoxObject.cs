@@ -20,15 +20,13 @@ public class CompareBoxObject : MonoBehaviour
             is_empty = false;
             Tag = other.gameObject.tag;
             colliderObject = other.gameObject;
-       }
+        }
     }
 
     private void OnTriggerExit(Collider other)
-    {
-    
+    {    
        Tag = "";
        colliderObject = null;
        is_empty = true;
-
     }
 }

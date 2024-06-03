@@ -50,13 +50,14 @@
      <Compile Include="Assets\Scripts\tracking\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\tracking\doublescreenCameramanager.cs" />
      <Compile Include="Assets\Scripts\tracking\QuitManager.cs" />
+     <Compile Include="Assets\Scripts\FinalScene.cs" />
      <Compile Include="Assets\Scripts\tracking\ColliderTrigger.cs" />
      <Compile Include="Assets\Scripts\tracking\DestroyOnTrigger.cs" />
      <Compile Include="Assets\Scripts\tracking\ObjectsMovement.cs" />
-     <Compile Include="Assets\Scripts\tracking\DiscardFossil.cs" />
      <Compile Include="Assets\Scripts\tracking\PluginConnector.cs" />
-     <Compile Include="Assets\Scripts\tracking\CompareBoxObject.cs" />
      <Compile Include="Assets\Scripts\tracking\SoundManager.cs" />
+     <Compile Include="Assets\Scripts\tracking\CompareBoxObject.cs" />
+     <Compile Include="Assets\Scripts\SceneChanger.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

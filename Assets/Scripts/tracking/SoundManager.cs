@@ -6,13 +6,16 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
     
-    public AudioClip soundTrack;
-    //public AudioClip getObject;
-    //public AudioClip dropObject;
     public AudioClip wrongMatch;
-    //public AudioClip goodMatch;
+    public AudioClip goodMatch;
     public AudioClip digging;
     public AudioClip shatterGlass;
+    public AudioClip triceratops;
+    public AudioClip trex;
+    public AudioClip shell;
+    public AudioClip claw;
+    public AudioClip fossil;
+    public AudioClip femur;
 
     private Vector3 camera1Position;
     private Vector3 camera2Position;
@@ -27,15 +30,18 @@ public class SoundManager : MonoBehaviour
     private void PlaySound(AudioClip clip) 
     {
         AudioSource.PlayClipAtPoint(clip, camera1Position); 
-        //AudioSource.PlayClipAtPoint(clip, camera2Position); 
     }
 
-    // Update is called once per frame
-    public void PlaySoundTrack()
+    public void PlayWrongMatch()
     {
-        PlaySound(soundTrack);
+        PlaySound(wrongMatch);
     }
 
+    public void PlayGoodMatch()
+    {
+        PlaySound(goodMatch);
+    }
+    
     public void PlayDigging()
     {
         PlaySound(digging);
@@ -46,8 +52,35 @@ public class SoundManager : MonoBehaviour
         PlaySound(shatterGlass);
     }
 
-    public void PlayWrongMatch()
+    public void PlayTriceratops()
     {
-        PlaySound(wrongMatch);
+        PlaySound(triceratops);
     }
+
+    public void PlayTrex()
+    {
+        PlaySound(trex);
+    }
+
+    public void PlayShell()
+    {
+        PlaySound(shell);
+    }
+
+    public void PlayClaw()
+    {
+        PlaySound(claw);
+    }
+
+    public void PlayFossil()
+    {
+        PlaySound(fossil);
+    }
+
+    public void PlayFemur()
+    {
+        PlaySound(femur);
+    }
+    
+
 }

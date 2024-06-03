@@ -33,92 +33,132 @@ public class ObjectsMovement : MonoBehaviour
         originalPos = gameObject.transform.position;
     }
 
+    IEnumerator PlayMusics(string tag) {
+        SoundManager.Instance.PlayGoodMatch();
+        yield return new WaitForSeconds(2);
+        playAudio(tag);
+    }
+
+    IEnumerator PrintWrongText() {
+        message.text =  "Try again! They are not the same fossil.";
+        yield return new WaitForSeconds(4);
+        message.text = "";
+    }
+
+    IEnumerator PrintGoodText(string tag) {
+        message.text =  "Great! This is a " + tag.ToString();
+        yield return new WaitForSeconds(4);
+        message.text = "";
+    }
+
     void Update()
     {
-        if (istrigger1){ //player 1 gets object
+        //player 1 gets object
+        if (istrigger1){ 
 
-            transform.position = player1.transform.position; //object follows player 1
-
-            if(touch_plane){ //if object touches above collider
-                transform.position = originalPos; //object returns to original pos
+            //object follows player 1
+            transform.position = player1.transform.position;
+            
+            //if object touches above collider, then returns to its original position
+            if(touch_plane){ 
+                transform.position = originalPos; 
                 touch_plane = false;
                 istrigger1 = false;
                 player1.GetComponent<PlayerMovement>().is_free = true;
             } 
         }
         
-        if (istrigger2){  //player 2 gets object
-
-            transform.position = player2.transform.position; //object follows player 2
-
-             if(touch_plane){ //if object touches above collider
-                transform.position = originalPos; //object returns to original pos
+        //player 2 gets object
+        if (istrigger2){  
+            
+            //object follows player 2
+            transform.position = player2.transform.position;
+                     
+            //if object touches above collider, then returns to its original position
+            if(touch_plane){ 
+                transform.position = originalPos; 
                 touch_plane = false;
                 istrigger2 = false;
                 player2.GetComponent<PlayerMovement>().is_free = true;
             }
-    
         }
+
     }
 
     private void OnTriggerEnter(Collider other) 
     {
 
-        if(other.CompareTag(tagplane)){ //if object touches above collider
+        //1. if object touches above collider
+        if(other.CompareTag(tagplane)){ 
             touch_plane = true; //bool to return object to init position
+            SoundManager.Instance.PlayDigging();
         }
 
-        if (other.CompareTag(tagbox1)) //if object enters box1
+        //2. if object enters box1
+        if (other.CompareTag(tagbox1)) 
         {
-            
-            //box1.GetComponent<CompareBoxObject>().is_empty = false; //box 1 is no longer empty
-
-            if(box2.GetComponent<CompareBoxObject>().is_empty == false){ //if box 2 is also not empty
-
+            //if box 2 is also not empty
+            if(box2.GetComponent<CompareBoxObject>().is_empty == false){ 
+                
                 collidertag2 = box2.GetComponent<CompareBoxObject>().Tag; 
-                if(gameObject.tag == collidertag2){ //see if objects are the same
-
+                //see if objects are the same
+                if(gameObject.tag == collidertag2){ 
+                    //leave object
                     transform.position = box1.transform.position;
-                    Destroy(gameObject, DestroyDelay);  //if they are then delete them
-                    Destroy(box2.GetComponent<CompareBoxObject>().colliderObject, DestroyDelay);
-                    playAudio(collidertag2);
 
-                    message.enabled = true;
+                    //destroy objects
+                    Destroy(gameObject, DestroyDelay);  
+                    Destroy(box2.GetComponent<CompareBoxObject>().colliderObject, DestroyDelay);
+                    
+                    //play audios
+                    StartCoroutine(PlayMusics(collidertag2));
+                    
+                    //reset some parameters
                     reset_parameters();
-                    disableText();
+
+                    //display text
+                    StartCoroutine(PrintGoodText(collidertag2));
 
                 }else{
-                    message.enabled = true;
-                    message.text = "Try again! They are not the same fossil.";
+                    //play audio
                     SoundManager.Instance.PlayWrongMatch();
-                    disableText();
+
+                    //display text
+                    StartCoroutine(PrintWrongText());
                 }
             }
         }
 
-        if (other.CompareTag(tagbox2))  //if object enters box2
+        //3. if object enters box2
+        if (other.CompareTag(tagbox2))  
         {
-            //box2.GetComponent<CompareBoxObject>().is_empty = false;
-          
-            if(box1.GetComponent<CompareBoxObject>().is_empty == false){ //if box 1 is also not emptyy
-
+            //if box 1 is also not empty
+            if(box1.GetComponent<CompareBoxObject>().is_empty == false){
                 collidertag1 = box1.GetComponent<CompareBoxObject>().Tag;
-                if(gameObject.tag == collidertag1){ //see if objects are the same
- 
+                //see if objects are the same
+                if(gameObject.tag == collidertag1){ 
+                    //leave object
                     transform.position = box2.transform.position;
+                    
+                    //destroy objects
                     Destroy(gameObject, DestroyDelay); //if they are then delete them
                     Destroy(box1.GetComponent<CompareBoxObject>().colliderObject, DestroyDelay);
-                    playAudio(collidertag1);
-
-                    message.enabled = true;
+                    
+                    //play audios
+                    StartCoroutine(PlayMusics(collidertag1));
+                    
+                    //reset some parameters
                     reset_parameters();
-                    disableText();
+
+                    //display text
+                    StartCoroutine(PrintGoodText(collidertag1));
                 
                 }else{
-                    message.enabled = true;
-                    message.text =  "Try again! They are not the same fossil.";
+                    //play audio
                     SoundManager.Instance.PlayWrongMatch();
-                    disableText();
+
+                    //display text
+                    StartCoroutine(PrintWrongText());
                 }
             }
         }
@@ -127,29 +167,53 @@ public class ObjectsMovement : MonoBehaviour
 
     private void reset_parameters() 
     {
- 
+        FinalScene.Instance.addFossil();
+
         istrigger1 = false; 
         istrigger2 = false; 
 
         player1.GetComponent<PlayerMovement>().is_free = true;
         player2.GetComponent<PlayerMovement>().is_free = true;
 
-        message.text = "Great!";
+        box1.GetComponent<CompareBoxObject>().Tag = "";
+        box2.GetComponent<CompareBoxObject>().Tag = "";
     }
-
-    private void disableText()
-    {
-        timeDisappear = Time.time + DestroyDelay*Time.deltaTime;
-        if(Time.time >= timeDisappear){
-            message.enabled = false; 
-        }
-    } 
 
     private void playAudio(string tag)
     {
         if (tag == "Vase")
         {
             SoundManager.Instance.PlayShatterGlass();
+        }
+
+        if (tag == "Triceratops")
+        {
+            SoundManager.Instance.PlayTriceratops();
+        }
+
+        if (tag == "T-Rex")
+        {
+            SoundManager.Instance.PlayTrex();
+        }
+
+        if (tag == "Shell")
+        {
+            SoundManager.Instance.PlayShell();
+        }
+        
+        if (tag == "Femur")
+        {
+            SoundManager.Instance.PlayFemur();
+        }
+
+        if (tag == "Claw")
+        {
+            SoundManager.Instance.PlayClaw();
+        }
+
+        if (tag == "Fossil")
+        {
+            SoundManager.Instance.PlayFossil();
         }
     }
 
